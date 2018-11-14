@@ -32,10 +32,16 @@ Mat filteredImage(Mat& input, queue<Mat>& frames, Mat& sum, const int& coef);
 /**********************     建立互动点函数    *********************************/
 
 bool getTriggerConfig(vector<trigger>& dst);
+bool getTriggerConfig(vector<vector<trigger>>& dst);
 
 bool saveTriggerConfig(vector<trigger>& src);
+bool saveTriggerConfig(vector<vector<trigger>>& src);
+
+void printTriggerConfig(const vector<trigger>& src);
+void printTriggerConfig(const vector<vector<trigger>>& src);
 
 void CreatTriggers(const Mat& mask, const int& coef, vector<trigger>& Trigger);
+void CreatTriggers(const int& CamIndex, const Mat& mask, const int& coef, vector<trigger>& Trigger);
 
 /**********************    设置触发区域蒙版    ********************************/
 
@@ -46,10 +52,15 @@ bool saveCameraMask(const vector<Mat>& CameraMask, const vector<int>& fliter_coe
 void SetInteractiveArea(const int& Num, vector<Mat>& CameraMask, vector<int>& fliter_coef);
 
 /**********************        测试互动点        ******************************/
+// 单个摄像头，触发时发送指令给tcp server
+void testTrigger(const Mat& CameraMask, const int coef, vector<trigger>& Trigger, const SOCKET& sclient);
+// 单个摄像头，触发时不发送指令给tcp server
+void testTrigger(const Mat& CameraMask, const int coef, vector<trigger>& Trigger);
 
-void testTrigger(const Mat& CameraMask, vector<trigger>& Trigger, const SOCKET& sclient);
+// 多个摄像头，触发时不发送指令
+void testTrigger(const vector<Mat>& CameraMask, const vector<int> coef, vector<vector<trigger>>& Trigger);
 
-void testTrigger(const Mat& CameraMask, vector<trigger>& Trigger);
-
+// 多个摄像头，触发时不发送指令
+void testTrigger(const vector<Mat>& CameraMask, const vector<int> coef, vector<vector<trigger>>& Trigger, const SOCKET& sclient);
 
 #endif //SYFLOWING_H
