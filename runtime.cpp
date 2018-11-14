@@ -29,29 +29,29 @@ int main()
 
 	/**********************************************************/
 
-	vector<trigger> Trigger;
+	vector<trigger> Trigger_single;
+	vector<vector<trigger>> Trigger;
 	vector<Mat> CameraMask;
 	vector<int> fliter_coef;
 
 	Trigger.clear();
+	Trigger_single.clear();
 	CameraMask.clear();
-
 	getCameraMask(CameraMask, fliter_coef);
-
-	if (getTriggerConfig(Trigger)) {
-		bool play = true;
-		while (play)
-		{
-			for (size_t i = 0; i < Trigger.size(); i++) {
-				Trigger[i].print();
-			}
-			testTrigger(CameraMask[CAMERA_NUM], Trigger, sclient);
+	
+	if (CameraMask.size() == 1) {
+		if (getTriggerConfig(Trigger_single)) {
+			testTrigger(CameraMask[CAMERA_NUM], fliter_coef[CAMERA_NUM], Trigger_single, sclient);
+		}
+	}
+	else if(CameraMask.size() > 1){
+		if (getTriggerConfig(Trigger)) {
+			testTrigger(CameraMask, fliter_coef, Trigger, sclient);
 		}
 	}
 	else {
 		cout << "file read error" << endl;
 		destroyAllWindows();
-		system("Pause");
 	}
 
 	closesocket(sclient);
